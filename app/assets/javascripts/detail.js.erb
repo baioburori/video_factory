@@ -1,0 +1,9 @@
+$(function(){
+	$("a#del").click(function(){
+	// alert("b");
+		var index = $(this).attr("index");
+		if ( window.confirm("削除してもよろしいですか？") ) {
+			location.href = "/videos/delete/" + index;
+		}
+	});
+});

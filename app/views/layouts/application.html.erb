@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+
+	<title>Video Factory</title>
+	<link rel="stylesheet" href="/css/9b3c9.css" />
+	<%= stylesheet_link_tag 'list' %>
+	<!--%= stylesheet_link_tag 'bootstrap' %-->
+	<!--%= stylesheet_link_tag 'bootstrap.min' %-->
+  <link rel="apple-touch-icon" href="http://static.fc2.com/image/iphone/apple-touch-icon.png" />
+  <!--script type="text/javascript" src="http://static.fc2.com/js/lib/jquery.js"></script-->
+    <%= javascript_include_tag "application" %>
+  <script type="text/javascript" src="http://static.fc2.com/js/blog/iphone_resize.js"></script>
+
+</head>
+<body>
+<div class="wrapper" id="jsiWrapper">
+<div class="contents bgDashed">
+	<div id="header">
+		<h1><a href="/videos/list">Video Factory</a></h1>
+		<!--p class="browser_change"><a href="http://kimamaniyoutube.blog78.fc2.com/?pc" title="PCページを表示">PC</a></p-->
+		<div id="header_menu"><span></span></div>
+	</div>
+
+
+<%= yield %>
+
+	<div id="footer">
+		<div class="powered">
+			Powered by Rails
+		</div>
+	</div>
+
+</div>
+</div>
+</body>
+</html>
