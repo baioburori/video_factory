@@ -13,6 +13,7 @@ class VideosController < ApplicationController
   IMAGE_API_URL = 'http://ajax.googleapis.com/ajax/services/search/images'
 
   BACK_UP_CONF = 'I:\\Users\\nakagawa\\Documents\\jscript\\fb_setting.json'
+  SLEEP_COMMAND = 'rundll32.exe PowrProf.dll,SetSuspendState'
 
   def getVideoList
 
@@ -180,6 +181,10 @@ class VideosController < ApplicationController
     deleteVideo( videoInfo['name'], videoInfo['format'] )
   end
 
+  # スリープのコントローラ
+  def sleep
+    @result = spawn(SLEEP_COMMAND)
+  end
   def deleteVideo( name, format )
     targetPath = NOT_WATCHED_DIR + '\\' + name + '.' + format
     encodedTargetPath = ENCODED_DIR + '\\' + Digest::MD5.new.update( name ).to_s + '.mp4'

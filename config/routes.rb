@@ -14,6 +14,7 @@ VideoFactory::Application.routes.draw do
   get "videos/player"
   get "videos/detail"
   get "videos/delete"
+  get "videos/sleep"
 
   match 'videos/detail/:index' => 'videos#detail'
   match 'videos/encode/:name/:format/:index' => 'videos#encode'

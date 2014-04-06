@@ -13,3 +13,11 @@
 //= require jquery
 //= require jquery_ujs
 //= require_tree .
+$(function(){
+	$("span.sleep").click(function(){
+		var index = $(this).attr("index");
+		if ( window.confirm("スリープしてもよろしいですか？") ) {
+			location.href = "/videos/sleep";
+		}
+	});
+});
