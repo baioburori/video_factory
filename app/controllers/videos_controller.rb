@@ -142,7 +142,7 @@ class VideosController < ApplicationController
 
 
   def encode
-    @escaped_name = URI.escape(params[:name] + params[:format])
+    @escaped_name = URI.escape(params[:name] + '.' + params[:format])
     @result = encodeVideo( params[:name], params[:format] )
   end
 
