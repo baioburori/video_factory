@@ -22,10 +22,12 @@ class VideosController < ApplicationController
     videoList = []
     i = 0
     filenames.each do |f|
+      # p 'f:' + f
       fileNameWithFormat = f
       format = getFormat( fileNameWithFormat );
       if format=="ts" || format=="mp4" then
         fileName = removeFormat( fileNameWithFormat );
+
         outputFileExist = File.exist?( ENCODED_DIR + '\\' + Digest::MD5.new.update(fileName).to_s + '.mp4' );
         rockFileExist = File.exist?( ENCODED_DIR + '\\' + Digest::MD5.new.update(fileName).to_s + '.mp4.lock' );
         if outputFileExist
@@ -41,7 +43,7 @@ class VideosController < ApplicationController
                       'name' => fileName, 
                       'format' => format, 
                       'status' => status, 
-                      'index' => i,
+                      'escaped_name' => CGI.escape(fileNameWithFormat),
                       'image_url' => getImageUrlByKeyword(fileName) 
                     }
         i += 1
@@ -52,15 +54,13 @@ class VideosController < ApplicationController
     return videoList
   end
 
-  def getVideoInfo(index)
+  def getVideoInfo(escapedName, format)
 
     Dir.chdir( NOT_WATCHED_DIR );
-    filenames = Dir.glob(["*.ts", "*.mp4"])             # 全てのファイル名をシフトJISコードで取得
     videoList = []
-      fileNameWithFormat = filenames[index]
-      format = getFormat( fileNameWithFormat );
+      p 'escapedName:' + escapedName
+      fileName = URI.unescape(escapedName)
       if format=="ts" || format=="mp4" then
-        fileName = removeFormat( fileNameWithFormat );
         outputFileExist = File.exist?( ENCODED_DIR + '\\' + Digest::MD5.new.update(fileName).to_s + '.mp4' );
         rockFileExist = File.exist?( ENCODED_DIR + '\\' + Digest::MD5.new.update(fileName).to_s + '.mp4.lock' );
         if outputFileExist
@@ -76,7 +76,7 @@ class VideosController < ApplicationController
                       'name' => fileName, 
                       'format' => format, 
                       'status' => status, 
-                      'index' => index,
+                      'escaped_name' => escapedName + '.' + format,
                       'image_url' => getImageUrlByKeyword(fileName),
                       'back_up_status' => getBackUpStatus(fileName)
                     }
@@ -129,22 +129,21 @@ class VideosController < ApplicationController
   end
 
   def getFormat( fileNameWithFormat )
+    p 'fileNameWithFormat:' + fileNameWithFormat
     format = fileNameWithFormat.match(%r{.+\.(.+)})[1]
     return format
   end
 
   def player
     
-    name = CGI.unescape( params[:name] )
+    name = URI.unescape( params[:name] )
     @source = '/file/' + name + '.mp4'
   end
 
 
   def encode
-    name = params[:name]
-    format = params[:format]
-    @index = params[:index].to_i
-    @result = encodeVideo( name, format )
+    @escaped_name = URI.escape(params[:name] + params[:format])
+    @result = encodeVideo( params[:name], params[:format] )
   end
 
   def encodeVideo( name,format )
@@ -168,17 +167,12 @@ class VideosController < ApplicationController
   end
 
   def detail
-    @videoInfo = getVideoInfo(params[:index].to_i)
+    @videoInfo = getVideoInfo(params[:escaped_name], params[:format])
+    @escaped_name = params[:escaped_name] + '.' + params[:format]
   end
 
   def delete
-    videoList = getVideoList
-    index = params[:index].to_i
-    if !videoList.empty?
-      videoInfo = videoList[index]
-    else
-    end
-    deleteVideo( videoInfo['name'], videoInfo['format'] )
+    deleteVideo( URI.unescape(params[:escaped_name]), params['format'] )
   end
 
   # スリープのコントローラ
@@ -188,8 +182,6 @@ class VideosController < ApplicationController
   def deleteVideo( name, format )
     targetPath = NOT_WATCHED_DIR + '\\' + name + '.' + format
     encodedTargetPath = ENCODED_DIR + '\\' + Digest::MD5.new.update( name ).to_s + '.mp4'
-
-
 
     if File.exist?( targetPath )
       File.delete( targetPath )

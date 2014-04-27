@@ -7,20 +7,16 @@ module VideosHelper
 	def getHtmlVideoList(videoList)
 		html = ''
 		i = 0
-		# html += ''."\n"
-		# html += '<div class="itemListWrap bgDashed">' + "\n"
-		# html += '<ul class="list cf">' + "\n"
 
 		html += '<ul class="listView cf">' + "\n"
 		if !videoList.empty?
 			videoList.each{|videoInfo|
 				
 				html += '<li>' + "\n"
-				html += '<a href="/videos/detail/' + i.to_s + '" id="itm0006222">' + "\n"
+				html += '<a href="/videos/detail/' + videoInfo['escaped_name'] + '" id="itm0006222">' + "\n"
 				html += '<div class="listViewInner">' + "\n"
 	
 				html += '<div class="listViewImg">' + "\n"
-				# html += '<img src="/common/sp/img/action/item.clipped.png" alt="" class="itemClipped">' + "\n"
 				html += '<img src="' + videoInfo['image_url'] + '" class="jsLazy" width="104" height="104" style="display: block;">' + "\n"
 				html += '</div>' + "\n"
 	
@@ -46,23 +42,6 @@ module VideosHelper
 		return html
 	end
 
-	# def getImageUrlByKeyword(name)
-		
-	# 	urls = [
-	# 		{'keyword' => 'げんしけん', 'url' => 'http://livedoor.blogimg.jp/animekurabu/imgs/d/7/d7da95d0.jpg'},
-	# 		{'keyword' => 'さんかれあ', 'url' => 'https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcRpfkgVaWd5sO8-s-C5f8RmEASQ2zhkQ1w2Pxy0ZkfyA5ZY_YuifA'},
-	# 		{"keyword" => "私がモテないのはどう考えてもお前らが悪い！", 'url' => 'https://si0.twimg.com/profile_images/3449899025/3d37d3adcd84f4e3f570364e31b8d40b.jpeg'}
-	# 	]
-		
-	# 	urls.each{|item|
-	# 		pattern = item['keyword']
-	# 		if name.match(/#{pattern}/)
-	# 			return item['url']
-	# 		end
-	# 	}
-	# 	return 'http://www.riviera-re.jp/wordpress/wp-content/themes/riviera/images/tmb_noimage_l.jpg'
-	# end
-
 	def getHtmlEncodeResult( result )
 		html = ""
 		if result
@@ -86,18 +65,17 @@ module VideosHelper
 			html += '<li>play</li>' + "\n"
 			html += '<li><a href="/videos/encode/' + CGI.escape( videoInfo['name'] ) + '/' + videoInfo['format'] + '/' + videoInfo['index'].to_s + '">encode</a></li>' + "\n"
 			html += '<li>' + videoInfo['back_up_status'] + '</li>'
-			html += '<li><a href="#" id="del" index="' + videoInfo['index'].to_s + '">delete</a></li>' + "\n"
+			html += '<li><a href="#" id="del" index="' + videoInfo['escaped_name'] + '">delete</a></li>' + "\n"
 		elsif videoInfo['status']==1
 			html += '<li>play</li>' + "\n"
 			html += '<li>now encoding</li>' + "\n"
 			html += '<li>' + videoInfo['back_up_status'] + '</li>'
 			html += '<li>delete</li>' + "\n"
 		elsif videoInfo['status']==2
-			# html += '<li><a href="/videos/player/' + Digest::MD5.new.update( videoInfo['name'] ).to_s + '">play</a></li>' + "\n"
 			html += '<li><a href="/file/' + Digest::MD5.new.update( videoInfo['name'] ).to_s + '.mp4">play</a></li>' + "\n"
 			html += '<li>encode</li>' + "\n"
 			html += '<li>' + videoInfo['back_up_status'] + '</li>'
-			html += '<li><a href="#" id="del" index="' + videoInfo['index'].to_s + '">delete</a></li>' + "\n"
+			html += '<li><a href="#" id="del" escaped_name="' + videoInfo['escaped_name'] + '">delete</a></li>' + "\n"
 		end
 		html += '</ul>' + "\n"
 		return html

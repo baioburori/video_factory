@@ -1,9 +1,8 @@
 $(function(){
 	$("a#del").click(function(){
-	// alert("b");
-		var index = $(this).attr("index");
+		var escapedName = $(this).attr("escaped_name");
 		if ( window.confirm("削除してもよろしいですか？") ) {
-			location.href = "/videos/delete/" + index;
+			location.href = encodeURI("/videos/delete/" + escapedName);
 		}
 	});
 });

@@ -1,9 +1,9 @@
 <%= raw getHtmlEncodeResult( @result ) %>
-<a href="/videos/detail/<%= @index %>">詳細にもどる</a>
+<a href="/videos/detail/<%= @escaped_name %>">詳細にもどる</a>
 <script>
 $(function(){
 	setInterval(function(){
-		location.href = "/videos/detail/<%= @index %>";
+		location.href = "/videos/detail/<%= @escaped_name %>";
 	}, 1500);
 })
 </script>

@@ -16,10 +16,10 @@ VideoFactory::Application.routes.draw do
   get "videos/delete"
   get "videos/sleep"
 
-  match 'videos/detail/:index' => 'videos#detail'
-  match 'videos/encode/:name/:format/:index' => 'videos#encode'
+  match 'videos/detail/:escaped_name' => 'videos#detail'
+  match 'videos/encode/:name/:format' => 'videos#encode'
   match 'videos/player/:name' => 'videos#player'
-  match 'videos/delete/:index' => 'videos#delete'
+  match 'videos/delete/:escaped_name' => 'videos#delete'
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
