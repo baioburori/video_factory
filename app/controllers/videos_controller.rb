@@ -18,11 +18,17 @@ class VideosController < ApplicationController
   def getVideoList
 
     Dir.chdir( NOT_WATCHED_DIR );
-    filenames = Dir.glob( '*' )             # 全てのファイル名をシフトJISコードで取得
+
+    # 全てのファイル名をシフトJISコードで取得
+    filenames = Dir.glob( '*' )
+
+    #  更新日時でソート
+    filenames.sort_by! {|filename| File.mtime(NOT_WATCHED_DIR + '\\' +filename)}
+    
     videoList = []
     i = 0
     filenames.each do |f|
-      # p 'f:' + f
+      # p 'timestamp:' + File.mtime(NOT_WATCHED_DIR + '\\' + f).to_s
       fileNameWithFormat = f
       format = getFormat( fileNameWithFormat );
       if format=="ts" || format=="mp4" then
