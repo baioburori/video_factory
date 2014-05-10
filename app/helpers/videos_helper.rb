@@ -65,7 +65,7 @@ module VideosHelper
 			html += '<li>play</li>' + "\n"
 			html += '<li><a href="/videos/encode/' + CGI.escape( videoInfo['name'] ) + '/' + videoInfo['format'] + '/' + videoInfo['index'].to_s + '">encode</a></li>' + "\n"
 			html += '<li>' + videoInfo['back_up_status'] + '</li>'
-			html += '<li><a href="#" id="del" index="' + videoInfo['escaped_name'] + '">delete</a></li>' + "\n"
+			html += '<li><a href="#" id="del" escaped_name="' + videoInfo['escaped_name'] + '">delete</a></li>' + "\n"
 		elsif videoInfo['status']==1
 			html += '<li>play</li>' + "\n"
 			html += '<li>now encoding</li>' + "\n"
