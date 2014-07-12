@@ -64,19 +64,20 @@ class VideosController < ApplicationController
 
     Dir.chdir( NOT_WATCHED_DIR );
     videoList = []
-      p 'escapedName:' + escapedName
       fileName = URI.unescape(escapedName)
       if format=="ts" || format=="mp4" then
+
+        # エンコードの状態判定
         outputFileExist = File.exist?( ENCODED_DIR + '\\' + Digest::MD5.new.update(fileName).to_s + '.mp4' );
         rockFileExist = File.exist?( ENCODED_DIR + '\\' + Digest::MD5.new.update(fileName).to_s + '.mp4.lock' );
-        if outputFileExist
-          if rockFileExist
-            status = 1
-          else
-            status = 2
-          end
+        if rockFileExist
+          status = 1 # エンコード中
         else
-          status = 0
+          if outputFileExist
+            status = 2 # エンコード終了
+          else
+            status = 0 # エンコード前
+          end
         end
         videoInfo = {
                       'name' => fileName, 
@@ -135,7 +136,6 @@ class VideosController < ApplicationController
   end
 
   def getFormat( fileNameWithFormat )
-    p 'fileNameWithFormat:' + fileNameWithFormat
     format = fileNameWithFormat.match(%r{.+\.(.+)})[1]
     return format
   end
@@ -159,7 +159,6 @@ class VideosController < ApplicationController
     lockFile = dstPath + '.lock'
 
     File.open( lockFile, "w").close()
-
     if format=='ts'
       result = spawn(HAND_BRAKE + ' -i ' + srcPath +' -o ' + dstPath + OPTION + ' & rm ' + lockFile)
     elsif format=='mp4'
