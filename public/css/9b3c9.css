@@ -729,3 +729,54 @@ dl.profile dd {
     }
 * html .cf             { zoom: 1; } /* IE6 */
 *:first-child+html .cf { zoom: 1; } /* IE7 */
+
+
+.news_header {
+padding: 15px 40px 15px 20px;
+border-top: 2px solid #000;
+position: relative;
+background: url(../img/news_detail.png) no-repeat center right;
+background-size: 28px;
+}
+
+h1.news_header, h2.news_header {
+font-family: 'Brandon Grotesque W01';
+letter-spacing: 4px;
+}
+
+h1.news_header, h2.news_header, h3.news_header, h4.news_header, h5.news_header, h6.news_header {
+font-size: 100%;
+font-weight: normal;
+}
+
+.news_header p {
+font-family: 'Brandon Grotesque W01';
+font-style: normal;
+color: #CACACA;
+font-size: 15px;
+text-transform: uppercase;
+}
+
+.news_header h1 a {
+text-decoration: none;
+color: #000;
+font-size: 15px;
+letter-spacing: 0;
+font-weight: 500;
+line-height: 1.3;
+text-transform: uppercase;
+}
+
+.news_header h1 div {
+text-decoration: none;
+color: #9f9f9f;
+font-size: 15px;
+letter-spacing: 0;
+font-weight: 500;
+line-height: 1.3;
+text-transform: uppercase;
+}
+.video_info {
+padding:10px 70px 10px 70px;
+text-align: center;
+}
