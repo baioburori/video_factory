@@ -183,6 +183,7 @@ class VideosController < ApplicationController
   # スリープのコントローラ
   def sleep
     @result = spawn(SLEEP_COMMAND)
+    redirect_to '/videos/list'
   end
   def deleteVideo( name, format )
     targetPath = NOT_WATCHED_DIR + '\\' + name + '.' + format
