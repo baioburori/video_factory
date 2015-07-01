@@ -63,7 +63,6 @@ module VideosHelper
 		end
 		html += '</div>'
 		html += '<div>' + "\n"
-		logger.debug('status:' + videoInfo['status'].to_s)
 		if videoInfo['status']==0
 			html += '<div class="news_body">' + "\n"
 			html += '<section>' + "\n"
