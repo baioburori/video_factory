@@ -12,6 +12,11 @@ module VideosHelper
 		if !videoList.empty?
 			videoList.each{|videoInfo|
 				
+				encodedStr = ''
+				if videoInfo['status'] == 2
+					encodedStr = '★'
+				end
+
 				html += '<li>' + "\n"
 				html += '<a href="/videos/detail/' + videoInfo['escaped_name'] + '" id="itm0006222">' + "\n"
 				html += '<div class="listViewInner">' + "\n"
@@ -23,7 +28,7 @@ module VideosHelper
 				html += '<div class="listViewSummary">' + "\n"
 				html += '<ul>' + "\n"
 				html += '<li class="itemName">' + "\n"
-				html += '<h2>' + videoInfo['name'].truncate(18) + '</h2>' + "\n"
+				html += '<h2>' + (encodedStr + videoInfo['name']).truncate(18) + '</h2>' + "\n"
 				html += '</li>' + "\n"			
 				html += '</ul>' + "\n"
 				html += '</div>' + "\n"
