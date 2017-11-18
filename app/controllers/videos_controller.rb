@@ -173,7 +173,6 @@ class VideosController < ApplicationController
   end
 
   def detail
-    p params[:escaped_name]
     filenameWithoutFormat = removeFormat(params[:escaped_name])
     format = getFormat(params[:escaped_name])
 
@@ -182,7 +181,9 @@ class VideosController < ApplicationController
   end
 
   def delete
-    deleteVideo( URI.unescape(params[:escaped_name]), params['format'] )
+    filenameWithoutFormat = removeFormat(params[:escaped_name])
+    format = getFormat(params[:escaped_name])
+    deleteVideo( filenameWithoutFormat, format )
     redirect_to '/videos/list'
   end
 

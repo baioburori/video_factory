@@ -19,7 +19,7 @@ VideoFactory::Application.routes.draw do
   match 'videos/detail/:escaped_name' => 'videos#detail', constraints: { escaped_name: /[^\/]+/ }
   match 'videos/encode/:name/:format' => 'videos#encode', constraints: { name: /[^\/]+/ }
   match 'videos/player/:name' => 'videos#player'
-  match 'videos/delete/:escaped_name' => 'videos#delete'
+  match 'videos/delete/:escaped_name' => 'videos#delete', constraints: { escaped_name: /[^\/]+/ }
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
