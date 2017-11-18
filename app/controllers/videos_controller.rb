@@ -24,7 +24,7 @@ class VideosController < ApplicationController
 
     #  更新日時でソート
     filenames.sort_by! {|filename| File.mtime(NOT_WATCHED_DIR + '\\' +filename)}
-    
+
     videoList = []
     i = 0
     filenames.each do |f|
@@ -46,11 +46,11 @@ class VideosController < ApplicationController
           status = 0
         end
         videoInfo = {
-                      'name' => fileName, 
-                      'format' => format, 
-                      'status' => status, 
+                      'name' => fileName,
+                      'format' => format,
+                      'status' => status,
                       'escaped_name' => CGI.escape(fileNameWithFormat),
-                      'image_url' => getImageUrlByKeyword(fileName) 
+                      'image_url' => getImageUrlByKeyword(fileName)
                     }
         i += 1
         videoList.push videoInfo
@@ -80,14 +80,14 @@ class VideosController < ApplicationController
           end
         end
         videoInfo = {
-                      'name' => fileName, 
-                      'format' => format, 
-                      'status' => status, 
+                      'name' => fileName,
+                      'format' => format,
+                      'status' => status,
                       'escaped_name' => escapedName + '.' + format,
                       'image_url' => getImageUrlByKeyword(fileName),
                       'back_up_status' => getBackUpStatus(fileName)
                     }
-      else 
+      else
       end
     return videoInfo
   end
@@ -129,19 +129,8 @@ class VideosController < ApplicationController
     return nil
   end
 
-  def removeFormat( fileNameWithFormat )
-    fileName = ''
-  fileName = fileNameWithFormat.match(%r{(.+)\..+})[1]
-    return fileName
-  end
-
-  def getFormat( fileNameWithFormat )
-    format = fileNameWithFormat.match(%r{.+\.(.+)})[1]
-    return format
-  end
-
   def player
-    
+
     name = URI.unescape( params[:name] )
     @source = '/file/' + name + '.mp4'
   end
@@ -172,9 +161,24 @@ class VideosController < ApplicationController
     @videoList = getVideoList
   end
 
+  def removeFormat( fileNameWithFormat )
+    fileName = ''
+  fileName = fileNameWithFormat.match(%r{(.+)\..+})[1]
+    return fileName
+  end
+
+  def getFormat( fileNameWithFormat )
+    format = fileNameWithFormat.match(%r{.+\.(.+)})[1]
+    return format
+  end
+
   def detail
-    @videoInfo = getVideoInfo(params[:escaped_name], params[:format])
-    @escaped_name = params[:escaped_name] + '.' + params[:format]
+    p params[:escaped_name]
+    filenameWithoutFormat = removeFormat(params[:escaped_name])
+    format = getFormat(params[:escaped_name])
+
+    @videoInfo = getVideoInfo(filenameWithoutFormat, format)
+    @escaped_name = params[:escaped_name]
   end
 
   def delete
