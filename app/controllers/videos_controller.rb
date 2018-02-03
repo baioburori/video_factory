@@ -9,7 +9,7 @@ class VideosController < ApplicationController
   ENCODED_DIR = 'I:\\Users\\nakagawa\\Documents\\rails\\video_factory\\public\\file'
   NOT_WATCHED_DIR = 'I:\\Users\\nakagawa\\Videos\\not_watched'
   HAND_BRAKE = '"C:\\Program Files\\Handbrake\\HandBrakeCLI.exe"'
-  OPTION = ' -e x264 -q 22.0 -r 29.97 --cfr -a 1 -E faac -B 128 -6 dpl2 -R Auto -D 0.0 --audio-copy-mask aac,ac3,dtshd,dts,mp4 --audio-fallback ffac3 -f mp4 -X 720 --modulus 2 --x264-preset medium --h264-profile main --h264-level 3.0'
+  OPTION = ' -e x264 -q 22.0 -r 29.97 --cfr -a 1 -E faac -B 128 -6 dpl2 -R Auto -D 0.0 --audio-copy-mask aac,ac3,dtshd,dts,mp4 --audio-fallback ffac3 -f mp4 -X 1080 --modulus 2 --x264-preset medium --h264-profile main --h264-level 3.0'
   IMAGE_API_URL = 'http://ajax.googleapis.com/ajax/services/search/images'
 
   BACK_UP_CONF = 'I:\\Users\\nakagawa\\Documents\\jscript\\fb_setting.json'
