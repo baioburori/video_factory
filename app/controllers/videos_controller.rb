@@ -11,6 +11,8 @@ class VideosController < ApplicationController
   HAND_BRAKE = '"C:\\Program Files\\Handbrake\\HandBrakeCLI.exe"'
   OPTION = ' -e x264 -q 22.0 -r 29.97 --cfr -a 1 -E faac -B 128 -6 dpl2 -R Auto -D 0.0 --audio-copy-mask aac,ac3,dtshd,dts,mp4 --audio-fallback ffac3 -f mp4 -X 1080 --modulus 2 --x264-preset medium --h264-profile main --h264-level 3.0'
   IMAGE_API_URL = 'http://ajax.googleapis.com/ajax/services/search/images'
+  NO_IMAGE_URL = 'https://www.freeiconspng.com/uploads/no-image-icon-15.png'
+
 
   BACK_UP_CONF = 'I:\\Users\\nakagawa\\Documents\\jscript\\fb_setting.json'
   SLEEP_COMMAND = 'rundll32.exe PowrProf.dll,SetSuspendState'
@@ -102,7 +104,7 @@ class VideosController < ApplicationController
 
       # DBに登録されてなかったら常にノーイメージ画像を返す
       if true
-        return 'http://www.riviera-re.jp/wordpress/wp-content/themes/riviera/images/tmb_noimage_l.jpg'
+        return NO_IMAGE_URL
       else
         imageList = JSON.parse(res.body)['responseData']['results']
         prng = Random.new
