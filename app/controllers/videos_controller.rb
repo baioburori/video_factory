@@ -39,6 +39,7 @@ class VideosController < ApplicationController
         outputFileExist = File.exist?( ENCODED_DIR + '\\' + Digest::MD5.new.update(fileName).to_s + '.mp4' );
         rockFileExist = File.exist?( ENCODED_DIR + '\\' + Digest::MD5.new.update(fileName).to_s + '.mp4.lock' );
         if outputFileExist
+          # エンコード中
           if rockFileExist
             status = 1
           else
