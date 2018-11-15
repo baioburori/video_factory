@@ -42,6 +42,7 @@ class VideosController < ApplicationController
           # エンコード中
           if rockFileExist
             status = 1
+            
           else
             status = 2
           end
