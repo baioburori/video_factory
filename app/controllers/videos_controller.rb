@@ -42,7 +42,7 @@ class VideosController < ApplicationController
           # エンコード中
           if rockFileExist
             status = 1
-            
+
           else
             status = 2
           end
@@ -154,9 +154,9 @@ class VideosController < ApplicationController
 
     File.open( lockFile, "w").close()
     if format=='ts'
-      result = spawn(HAND_BRAKE + ' -i ' + srcPath +' -o ' + dstPath + OPTION + ' & rm ' + lockFile)
+      result = spawn(HAND_BRAKE + ' -i ' + srcPath +' -o ' + dstPath + OPTION + ' & del ' + lockFile)
     elsif format=='mp4'
-      result = spawn( 'cp ' + srcPath + ' ' + dstPath + ' & rm ' + lockFile )
+      result = spawn( 'cp ' + srcPath + ' ' + dstPath + ' & del ' + lockFile )
     end
     return result
   end
