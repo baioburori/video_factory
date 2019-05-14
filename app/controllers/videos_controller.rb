@@ -8,8 +8,9 @@ require 'uri'
 class VideosController < ApplicationController
   ENCODED_DIR = 'I:\\Users\\nakagawa\\Documents\\rails\\video_factory\\public\\file'
   NOT_WATCHED_DIR = 'I:\\Users\\nakagawa\\Videos\\not_watched'
-  HAND_BRAKE = '"C:\\Program Files\\Handbrake\\HandBrakeCLI.exe"'
-  OPTION = ' -e x264 -q 22.0 -r 29.97 --cfr -a 1 -E faac -B 128 -6 dpl2 -R Auto -D 0.0 --audio-copy-mask aac,ac3,dtshd,dts,mp4 --audio-fallback ffac3 -f mp4 -X 1080 --modulus 2 --x264-preset medium --h264-profile main --h264-level 3.0'
+  HAND_BRAKE = '"I:\\Program Files\\Handbrake\\HandBrakeCLI.exe"'
+  OPTION = ' -e x264 -q 22.0 -r 29.97 --cfr -a 1 -E faac -B 128 -6 dpl2 -R Auto -D 0.0 --audio-copy-mask aac,ac3,dtshd,dts,mp3 --audio-fallback ffac3 -f mp4 -X 1080 --modulus 2 --x264-preset medium --h264-profile main --h264-level 3.0'
+  # OPTION = ' -e x264 -q 22.0 -r 29.97 --cfr -a 1 -E faac -B 128 -6 dpl2 -R Auto -D 0.0 --audio-copy-mask aac,ac3,dtshd,dts,mp4 --audio-fallback ffac3 -f mp4 -X 1080 --modulus 2 --x264-preset medium --h264-profile main --h264-level 3.0'
   IMAGE_API_URL = 'http://ajax.googleapis.com/ajax/services/search/images'
   NO_IMAGE_URL = 'https://www.freeiconspng.com/uploads/no-image-icon-15.png'
 
@@ -120,17 +121,21 @@ class VideosController < ApplicationController
   end
 
   def getImageUrlInDatabase(name)
-    imageUrlList = ImageUrl.find(:all)
-    if imageUrlList.blank?
-    else
-      imageUrlList.each{|imageUrl|
-        if /#{imageUrl.query}/ =~ name
-          return imageUrl.url
-        else
-        end
-      }
+    begin
+      imageUrlList = ImageUrl.find(:all)
+      if imageUrlList.blank?
+      else
+        imageUrlList.each{|imageUrl|
+          if /#{imageUrl.query}/ =~ name
+            return imageUrl.url
+          else
+          end
+        }
+      end
+      return nil
+    rescue ActiveRecord::RecordNotFound => e
+      return nil
     end
-    return nil
   end
 
   def player
@@ -146,16 +151,33 @@ class VideosController < ApplicationController
     redirect_to '/videos/detail/' + CGI.escape(name)
   end
 
+  def testDb
+    # @titles = Title.all
+    @imageUrlList = ImageUrl.all
+
+  end
+
   def encodeVideo( name,format )
+
+    p 'start encodeVideo'
+
     convertedName = name.kconv(Kconv::SJIS, Kconv::UTF8)
     srcPath = NOT_WATCHED_DIR + '\\' + convertedName + '.' + format
     dstPath = ENCODED_DIR + '\\' + Digest::MD5.new.update( name ).to_s + '.mp4'
     lockFile = dstPath + '.lock'
 
+
+    p 'start create lock file'
+    p 'lock_file:' + lockFile
     File.open( lockFile, "w").close()
+    p 'end create lock file'
+
     if format=='ts'
+      p 'ts'
+      p HAND_BRAKE + ' -i ' + srcPath +' -o ' + dstPath + OPTION
       result = spawn(HAND_BRAKE + ' -i ' + srcPath +' -o ' + dstPath + OPTION + ' & del ' + lockFile)
     elsif format=='mp4'
+      p 'mp4'
       result = spawn( 'cp ' + srcPath + ' ' + dstPath + ' & del ' + lockFile )
     end
     return result

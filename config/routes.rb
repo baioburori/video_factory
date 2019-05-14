@@ -16,10 +16,16 @@ VideoFactory::Application.routes.draw do
   get "videos/delete"
   get "videos/sleep"
 
-  match 'videos/detail/:escaped_name' => 'videos#detail', constraints: { escaped_name: /[^\/]+/ }
-  match 'videos/encode/:name/:format' => 'videos#encode', constraints: { name: /[^\/]+/ }
-  match 'videos/player/:name' => 'videos#player'
-  match 'videos/delete/:escaped_name' => 'videos#delete', constraints: { escaped_name: /[^\/]+/ }
+  # match 'videos/detail/:escaped_name' => 'videos#detail', constraints: { escaped_name: /[^\/]+/ }
+  # match 'videos/encode/:name/:format' => 'videos#encode', constraints: { name: /[^\/]+/ }
+  # match 'videos/player/:name' => 'videos#player'
+  # match 'videos/delete/:escaped_name' => 'videos#delete', constraints: { escaped_name: /[^\/]+/ }
+  get 'videos/detail/:escaped_name' => 'videos#detail', constraints: { escaped_name: /[^\/]+/ }
+  get 'videos/encode/:name/:format' => 'videos#encode', constraints: { name: /[^\/]+/ }
+  get 'videos/player/:name' => 'videos#player'
+  get 'videos/delete/:escaped_name' => 'videos#delete', constraints: { escaped_name: /[^\/]+/ }
+
+  get 'videos/db' => 'videos#db'
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
