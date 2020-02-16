@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Query:</b>
+  <%= @image_url.query %>
+</p>
+
+<p>
+  <b>Url:</b>
+  <%= @image_url.url %>
+</p>
+
+
+<%= link_to 'Edit', edit_image_url_path(@image_url) %> |
+<%= link_to 'Back', image_urls_path %>

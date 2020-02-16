@@ -1,0 +1,9 @@
+<%= raw getHtmlEncodeResult( @result ) %>
+<a href="/videos/detail/<%= @escaped_name %>">詳細にもどる</a>
+<script>
+$(function(){
+	setInterval(function(){
+		location.href = encodeURI("/videos/detail/<%= @escaped_name %>");
+	}, 1500);
+})
+</script>
