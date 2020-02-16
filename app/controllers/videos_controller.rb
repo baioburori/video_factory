@@ -4,6 +4,8 @@ require 'digest/md5'
 require 'kconv'
 require 'net/http'
 require 'uri'
+require 'fileutils'
+
 
 class VideosController < ApplicationController
   ENCODED_DIR = 'I:\\Users\\nakagawa\\Documents\\rails\\video_factory\\public\\file'
@@ -66,7 +68,6 @@ class VideosController < ApplicationController
   end
 
   def getVideoInfo(escapedName, format)
-
     Dir.chdir( NOT_WATCHED_DIR );
     videoList = []
       fileName = URI.unescape(escapedName)
@@ -85,7 +86,7 @@ class VideosController < ApplicationController
           end
         end
         videoInfo = {
-                      'name' => fileName,
+                      'name' => CGI.unescape(fileName),
                       'format' => format,
                       'status' => status,
                       'escaped_name' => escapedName + '.' + format,
@@ -158,9 +159,6 @@ class VideosController < ApplicationController
   end
 
   def encodeVideo( name,format )
-
-    p 'start encodeVideo'
-
     convertedName = name.kconv(Kconv::SJIS, Kconv::UTF8)
     srcPath = NOT_WATCHED_DIR + '\\' + convertedName + '.' + format
     dstPath = ENCODED_DIR + '\\' + Digest::MD5.new.update( name ).to_s + '.mp4'
@@ -173,12 +171,12 @@ class VideosController < ApplicationController
     p 'end create lock file'
 
     if format=='ts'
-      p 'ts'
       p HAND_BRAKE + ' -i ' + srcPath +' -o ' + dstPath + OPTION
       result = spawn(HAND_BRAKE + ' -i ' + srcPath +' -o ' + dstPath + OPTION + ' & del ' + lockFile)
     elsif format=='mp4'
-      p 'mp4'
-      result = spawn( 'cp ' + srcPath + ' ' + dstPath + ' & del ' + lockFile )
+      FileUtils.cp(srcPath, dstPath)
+      result = spawn( 'del ' + lockFile )
+      #result = spawn( 'cp ' + srcPath + ' ' + dstPath + ' & del ' + lockFile )
     end
     return result
   end
@@ -204,6 +202,10 @@ class VideosController < ApplicationController
 
     @videoInfo = getVideoInfo(filenameWithoutFormat, format)
     @escaped_name = params[:escaped_name]
+
+    # URL末尾がmp4だとdetail.mp4.erb探しにいってしまうためテンプレ明示的に指定
+    render "videos/detail.html.erb"
+
   end
 
   def delete
@@ -218,13 +220,17 @@ class VideosController < ApplicationController
     @result = spawn(SLEEP_COMMAND)
     redirect_to '/videos/list'
   end
+
   def deleteVideo( name, format )
-    targetPath = NOT_WATCHED_DIR + '\\' + name + '.' + format
+    targetPath = NOT_WATCHED_DIR + '\\' + CGI.unescape(name) + '.' + format
     encodedTargetPath = ENCODED_DIR + '\\' + Digest::MD5.new.update( name ).to_s + '.mp4'
 
+    # オリジナルのファイル削除
     if File.exist?( targetPath )
       File.delete( targetPath )
     end
+
+    # エンコード済みファイル削除
     if File.exist?( encodedTargetPath)
       File.delete( encodedTargetPath )
     end
