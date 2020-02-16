@@ -164,11 +164,7 @@ class VideosController < ApplicationController
     dstPath = ENCODED_DIR + '\\' + Digest::MD5.new.update( name ).to_s + '.mp4'
     lockFile = dstPath + '.lock'
 
-
-    p 'start create lock file'
-    p 'lock_file:' + lockFile
     File.open( lockFile, "w").close()
-    p 'end create lock file'
 
     if format=='ts'
       p HAND_BRAKE + ' -i ' + srcPath +' -o ' + dstPath + OPTION
