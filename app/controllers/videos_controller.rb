@@ -159,8 +159,7 @@ class VideosController < ApplicationController
   end
 
   def encodeVideo( name,format )
-    convertedName = name.kconv(Kconv::SJIS, Kconv::UTF8)
-    srcPath = NOT_WATCHED_DIR + '\\' + convertedName + '.' + format
+    srcPath = NOT_WATCHED_DIR + '\\' + name + '.' + format
     dstPath = ENCODED_DIR + '\\' + Digest::MD5.new.update( name ).to_s + '.mp4'
     lockFile = dstPath + '.lock'
 
